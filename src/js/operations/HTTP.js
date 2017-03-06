@@ -10,7 +10,7 @@
  * @namespace
  */
 var HTTP = {
-    
+
     /**
      * Strip HTTP headers operation.
      *
@@ -18,14 +18,14 @@ var HTTP = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_strip_headers: function(input, args) {
-        var header_end = input.indexOf("\r\n\r\n") +
-            (header_end < 0) ? input.indexOf("\n\n") + 2 : header_end + 4;
-            
-        return (header_end < 2) ? input : input.slice(header_end, input.length);
+    runStripHeaders: function(input, args) {
+        var headerEnd = input.indexOf("\r\n\r\n") +
+            (headerEnd < 0) ? input.indexOf("\n\n") + 2 : headerEnd + 4;
+
+        return (headerEnd < 2) ? input : input.slice(headerEnd, input.length);
     },
-    
-    
+
+
     /**
      * Parse User Agent operation.
      *
@@ -33,9 +33,9 @@ var HTTP = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_parse_user_agent: function(input, args) {
-        var ua = UAS_parser.parse(input);
-        
+    runParseUserAgent: function(input, args) {
+        var ua = UAS_parser.parse(input); // eslint-disable-line camelcase
+
         return "Type: " + ua.type + "\n" +
             "Family: " + ua.uaFamily + "\n" +
             "Name: " + ua.uaName + "\n" +

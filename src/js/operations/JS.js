@@ -10,7 +10,7 @@
  * @namespace
  */
 var JS = {
-    
+
     /**
      * @constant
      * @default
@@ -36,7 +36,7 @@ var JS = {
      * @default
      */
     PARSE_TOLERANT: false,
-    
+
     /**
      * JavaScript Parser operation.
      *
@@ -44,26 +44,26 @@ var JS = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_parse: function (input, args) {
-        var parse_loc = args[0],
-            parse_range = args[1],
-            parse_tokens = args[2],
-            parse_comment = args[3],
-            parse_tolerant = args[4],
+    runParse: function (input, args) {
+        var parseLoc = args[0],
+            parseRange = args[1],
+            parseTokens = args[2],
+            parseComment = args[3],
+            parseTolerant = args[4],
             result = {},
             options = {
-                loc:      parse_loc,
-                range:    parse_range,
-                tokens:   parse_tokens,
-                comment:  parse_comment,
-                tolerant: parse_tolerant
+                loc:      parseLoc,
+                range:    parseRange,
+                tokens:   parseTokens,
+                comment:  parseComment,
+                tolerant: parseTolerant
             };
-            
+
         result = esprima.parse(input, options);
         return JSON.stringify(result, null, 2);
     },
-    
-    
+
+
     /**
      * @constant
      * @default
@@ -84,7 +84,7 @@ var JS = {
      * @default
      */
     BEAUTIFY_COMMENT: true,
-    
+
     /**
      * JavaScript Beautify operation.
      *
@@ -92,44 +92,44 @@ var JS = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_beautify: function(input, args) {
-        var beautify_indent = args[0] || JS.BEAUTIFY_INDENT,
+    runBeautify: function(input, args) {
+        var beautifyIndent = args[0] || JS.BEAUTIFY_INDENT,
             quotes = args[1].toLowerCase(),
-            beautify_semicolons = args[2],
-            beautify_comment = args[3],
+            beautifySemicolons = args[2],
+            beautifyComment = args[3],
             result = "",
             AST;
-            
+
         try {
             AST = esprima.parse(input, {
                 range: true,
                 tokens: true,
                 comment: true
             });
-            
+
             var options = {
                 format: {
                     indent: {
-                        style: beautify_indent
+                        style: beautifyIndent
                     },
                     quotes: quotes,
-                    semicolons: beautify_semicolons,
+                    semicolons: beautifySemicolons,
                 },
-                comment: beautify_comment
+                comment: beautifyComment
             };
-            
+
             if (options.comment)
                 AST = escodegen.attachComments(AST, AST.comments, AST.tokens);
-                
+
             result = escodegen.generate(AST, options);
-        } catch(e) {
+        } catch (e) {
             // Leave original error so the user can see the detail
             throw "Unable to parse JavaScript.<br>" + e.message;
         }
         return result;
     },
-    
-    
+
+
     /**
      * JavaScript Minify operation.
      *
@@ -137,13 +137,13 @@ var JS = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_minify: function(input, args) {
+    runMinify: function(input, args) {
         var result = "",
             AST = esprima.parse(input),
-            optimised_AST = esmangle.optimize(AST, null),
-            mangled_AST = esmangle.mangle(optimised_AST);
-            
-        result = escodegen.generate(mangled_AST, {
+            optimisedAST = esmangle.optimize(AST, null),
+            mangledAST = esmangle.mangle(optimisedAST);
+
+        result = escodegen.generate(mangledAST, {
             format: {
                 renumber:    true,
                 hexadecimal: true,

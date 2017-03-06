@@ -16,7 +16,7 @@ var Punycode = {
      * @default
      */
     IDN: false,
-    
+
     /**
      * To Punycode operation.
      *
@@ -24,17 +24,17 @@ var Punycode = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_to_ascii: function(input, args) {
+    runToAscii: function(input, args) {
         var idn = args[0];
-        
+
         if (idn) {
             return punycode.ToASCII(input);
         } else {
             return punycode.encode(input);
         }
     },
-    
-    
+
+
     /**
      * From Punycode operation.
      *
@@ -42,14 +42,14 @@ var Punycode = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_to_unicode: function(input, args) {
+    runToUnicode: function(input, args) {
         var idn = args[0];
-        
+
         if (idn) {
             return punycode.ToUnicode(input);
         } else {
             return punycode.decode(input);
         }
     },
-    
+
 };

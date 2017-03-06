@@ -14,7 +14,7 @@ var Base = {
      * @default
      */
     DEFAULT_RADIX: 36,
-    
+
     /**
      * To Base operation.
      *
@@ -22,7 +22,7 @@ var Base = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_to: function(input, args) {
+    runTo: function(input, args) {
         if (!input) {
             throw ("Error: Input must be a number");
         }
@@ -32,8 +32,8 @@ var Base = {
         }
         return input.toString(radix);
     },
-    
-    
+
+
     /**
      * From Base operation.
      *
@@ -41,12 +41,12 @@ var Base = {
      * @param {Object[]} args
      * @returns {number}
      */
-    run_from: function(input, args) {
+    runFrom: function(input, args) {
         var radix = args[0] || Base.DEFAULT_RADIX;
         if (radix < 2 || radix > 36) {
             throw "Error: Radix argument must be between 2 and 36";
         }
         return parseInt(input.replace(/\s/g, ""), radix);
     },
-    
+
 };

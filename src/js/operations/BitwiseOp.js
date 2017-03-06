@@ -15,26 +15,26 @@ var BitwiseOp = {
      * Runs bitwise operations across the input data.
      *
      * @private
-     * @param {byte_array} input
-     * @param {byte_array} key
+     * @param {byteArray} input
+     * @param {byteArray} key
      * @param {function} func - The bitwise calculation to carry out
-     * @param {boolean} null_preserving
+     * @param {boolean} nullPreserving
      * @param {string} scheme
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    _bit_op: function (input, key, func, null_preserving, scheme) {
+    _bitOp: function (input, key, func, nullPreserving, scheme) {
         if (!key || !key.length) key = [0];
         var result = [],
             x = null,
             k = null,
             o = null;
-        
+
         for (var i = 0; i < input.length; i++) {
             k = key[i % key.length];
             o = input[i];
-            x = null_preserving && (o === 0 || o === k) ? o : func(o, k);
+            x = nullPreserving && (o === 0 || o === k) ? o : func(o, k);
             result.push(x);
-            if (scheme !== "Standard" && !(null_preserving && (o === 0 || o === k))) {
+            if (scheme !== "Standard" && !(nullPreserving && (o === 0 || o === k))) {
                 switch (scheme) {
                     case "Input differential":
                         key[i % key.length] = x;
@@ -45,11 +45,11 @@ var BitwiseOp = {
                 }
             }
         }
-        
+
         return result;
     },
-    
-    
+
+
     /**
      * @constant
      * @default
@@ -65,25 +65,25 @@ var BitwiseOp = {
      * @default
      */
     KEY_FORMAT: ["Hex", "Base64", "UTF8", "UTF16", "UTF16LE", "UTF16BE", "Latin1"],
-    
+
     /**
      * XOR operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    run_xor: function (input, args) {
+    runXor: function (input, args) {
         var key = Utils.format[args[0].option].parse(args[0].string || ""),
             scheme = args[1],
-            null_preserving = args[2];
-        
-        key = Utils.word_array_to_byte_array(key);
-            
-        return BitwiseOp._bit_op(input, key, BitwiseOp._xor, null_preserving, scheme);
+            nullPreserving = args[2];
+
+        key = Utils.wordArrayToByteArray(key);
+
+        return BitwiseOp._bitOp(input, key, BitwiseOp._xor, nullPreserving, scheme);
     },
-    
-    
+
+
     /**
      * @constant
      * @default
@@ -109,123 +109,123 @@ var BitwiseOp = {
      * @default
      */
     XOR_BRUTE_OUTPUT_HEX: false,
-    
+
     /**
      * XOR Brute Force operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
      * @returns {string}
      */
-    run_xor_brute: function (input, args) {
-        var key_length = parseInt(args[0], 10),
-            sample_length = args[1],
-            sample_offset = args[2],
-            null_preserving = args[3],
+    runXorBrute: function (input, args) {
+        var keyLength = parseInt(args[0], 10),
+            sampleLength = args[1],
+            sampleOffset = args[2],
+            nullPreserving = args[3],
             differential = args[4],
             crib = args[5],
-            print_key = args[6],
-            output_hex = args[7],
+            printKey = args[6],
+            outputHex = args[7],
             regex;
-        
+
         var output = "",
             result,
-            result_utf8;
-        
-        input = input.slice(sample_offset, sample_offset + sample_length);
-        
+            resultUtf8;
+
+        input = input.slice(sampleOffset, sampleOffset + sampleLength);
+
         if (crib !== "") {
             regex = new RegExp(crib, "im");
         }
-        
-        
-        for (var key = 1, l = Math.pow(256, key_length); key < l; key++) {
-            result = BitwiseOp._bit_op(input, Utils.hex_to_byte_array(key.toString(16)), BitwiseOp._xor, null_preserving, differential);
-            result_utf8 = Utils.byte_array_to_utf8(result);
-            if (crib !== "" && result_utf8.search(regex) === -1) continue;
-            if (print_key) output += "Key = " + Utils.hex(key, (2*key_length)) + ": ";
-            if (output_hex)
-                output += Utils.byte_array_to_hex(result) + "\n";
+
+
+        for (var key = 1, l = Math.pow(256, keyLength); key < l; key++) {
+            result = BitwiseOp._bitOp(input, Utils.hexToByteArray(key.toString(16)), BitwiseOp._xor, nullPreserving, differential);
+            resultUtf8 = Utils.byteArrayToUtf8(result);
+            if (crib !== "" && resultUtf8.search(regex) === -1) continue;
+            if (printKey) output += "Key = " + Utils.hex(key, (2*keyLength)) + ": ";
+            if (outputHex)
+                output += Utils.byteArrayToHex(result) + "\n";
             else
-                output += Utils.printable(result_utf8, false) + "\n";
-            if (print_key) output += "\n";
+                output += Utils.printable(resultUtf8, false) + "\n";
+            if (printKey) output += "\n";
         }
         return output;
     },
-    
-    
+
+
     /**
      * NOT operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    run_not: function (input, args) {
-        return BitwiseOp._bit_op(input, null, BitwiseOp._not);
+    runNot: function (input, args) {
+        return BitwiseOp._bitOp(input, null, BitwiseOp._not);
     },
-    
-    
+
+
     /**
      * AND operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    run_and: function (input, args) {
+    runAnd: function (input, args) {
         var key = Utils.format[args[0].option].parse(args[0].string || "");
-        key = Utils.word_array_to_byte_array(key);
-        
-        return BitwiseOp._bit_op(input, key, BitwiseOp._and);
+        key = Utils.wordArrayToByteArray(key);
+
+        return BitwiseOp._bitOp(input, key, BitwiseOp._and);
     },
-    
-    
+
+
     /**
      * OR operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    run_or: function (input, args) {
+    runOr: function (input, args) {
         var key = Utils.format[args[0].option].parse(args[0].string || "");
-        key = Utils.word_array_to_byte_array(key);
-        
-        return BitwiseOp._bit_op(input, key, BitwiseOp._or);
+        key = Utils.wordArrayToByteArray(key);
+
+        return BitwiseOp._bitOp(input, key, BitwiseOp._or);
     },
-    
-    
+
+
     /**
      * ADD operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    run_add: function (input, args) {
+    runAdd: function (input, args) {
         var key = Utils.format[args[0].option].parse(args[0].string || "");
-        key = Utils.word_array_to_byte_array(key);
-        
-        return BitwiseOp._bit_op(input, key, BitwiseOp._add);
+        key = Utils.wordArrayToByteArray(key);
+
+        return BitwiseOp._bitOp(input, key, BitwiseOp._add);
     },
-    
-    
+
+
     /**
      * SUB operation.
      *
-     * @param {byte_array} input
+     * @param {byteArray} input
      * @param {Object[]} args
-     * @returns {byte_array}
+     * @returns {byteArray}
      */
-    run_sub: function (input, args) {
+    runSub: function (input, args) {
         var key = Utils.format[args[0].option].parse(args[0].string || "");
-        key = Utils.word_array_to_byte_array(key);
-        
-        return BitwiseOp._bit_op(input, key, BitwiseOp._sub);
+        key = Utils.wordArrayToByteArray(key);
+
+        return BitwiseOp._bitOp(input, key, BitwiseOp._sub);
     },
-    
-    
+
+
     /**
      * XOR bitwise calculation.
      *
@@ -237,8 +237,8 @@ var BitwiseOp = {
     _xor: function (operand, key) {
         return operand ^ key;
     },
-    
-    
+
+
     /**
      * NOT bitwise calculation.
      *
@@ -249,8 +249,8 @@ var BitwiseOp = {
     _not: function (operand, _) {
         return ~operand & 0xff;
     },
-    
-    
+
+
     /**
      * AND bitwise calculation.
      *
@@ -262,8 +262,8 @@ var BitwiseOp = {
     _and: function (operand, key) {
         return operand & key;
     },
-    
-    
+
+
     /**
      * OR bitwise calculation.
      *
@@ -276,7 +276,7 @@ var BitwiseOp = {
         return operand | key;
     },
 
-    
+
     /**
      * ADD bitwise calculation.
      *
@@ -289,7 +289,7 @@ var BitwiseOp = {
         return (operand + key) % 256;
     },
 
-    
+
     /**
      * SUB bitwise calculation.
      *

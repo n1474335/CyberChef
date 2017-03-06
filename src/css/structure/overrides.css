@@ -64,6 +64,10 @@ blockquote {
     font-size: inherit;
 }
 
+blockquote a {
+    cursor: pointer;
+}
+
 optgroup {
     font-weight: bold;
 }
@@ -71,6 +75,10 @@ optgroup {
 .panel-body:before,
 .panel-body:after {
     content: "";
+}
+
+.table-nonfluid {
+    width: auto !important;
 }
 
 

@@ -22,7 +22,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="UTF-8">
         <title>CyberChef</title>
         
         <meta name="copyright" content="Crown Copyright 2016" />
@@ -58,13 +58,13 @@
                 <div id="operations" class="split split-horizontal no-select">
                     <div class="title no-select">Operations</div>
                     <input type="search" class="form-control" id="search" placeholder="Search..." autocomplete="off">
-                    <ul class="op_list" id="search-results"></ul>
+                    <ul class="op-list" id="search-results"></ul>
                     <div class="panel-group no-select" id="categories"></div>
                 </div>
                 
                 <div id="recipe" class="split split-horizontal no-select">
                     <div class="title no-select">Recipe</div>
-                    <ul id="rec_list" class="no-select"></ul>
+                    <ul id="rec-list" class="no-select"></ul>
                     
                     <div id="controls" class="no-select">
                         <div id="operational-controls">
@@ -252,7 +252,7 @@
                             <li><span style="font-weight: bold">To remove:</span> hit the red cross or drag out of the list below</li>
                         </ul>
                         <br>
-                        <ul id="edit-favourites-list" class="op_list"></ul>
+                        <ul id="edit-favourites-list" class="op-list"></ul>
                         <div class="option-item">
                         </div>
                     </div>
@@ -274,7 +274,7 @@
                     </div>
                     <div class="modal-body">
                         <img class="about-img-left" src="images/cyberchef-128x128.png" />
-                        <p class="subtext">Compile time: <%= grunt.template.today("dd/mm/yyyy HH:MM:ss") %> UTC</p>
+                        <p class="subtext">Compile time: <%= compileTime %></p>
                         <p>&copy Crown Copyright 2016.</p>
                         <p>Licenced under the Apache Licence, Version 2.0.</p>
                         <br>
@@ -284,6 +284,10 @@
                                 <li role='presentation' class='active'><a href='#faqs' aria-controls='profile' role='tab' data-toggle='tab'>
                                     <img src='images/help-16x16.png' />
                                     FAQs
+                                </a></li>
+                                <li role='presentation'><a href='#report-bug' aria-controls='messages' role='tab' data-toggle='tab'>
+                                    <img src='images/bug-16x16.png' />
+                                    Report a bug
                                 </a></li>
                                 <li role='presentation'><a href='#stats' aria-controls='messages' role='tab' data-toggle='tab'>
                                     <img src='images/stats-16x16.png' />
@@ -333,10 +337,18 @@
                                         <p><a href='?recipe=%5B%7B"op"%3A"Fork"%2C"args"%3A%5B"%5C%5Cn"%2C"%5C%5Cn"%5D%7D%2C%7B"op"%3A"From%20UNIX%20Timestamp"%2C"args"%3A%5B"Seconds%20(s)"%5D%7D%5D&input=OTc4MzQ2ODAwCjEwMTI2NTEyMDAKMTA0NjY5NjQwMAoxMDgxMDg3MjAwCjExMTUzMDUyMDAKMTE0OTYwOTYwMA%3D%3D'>Click here</a> for an example.</p>
                                     </div>
                                 </div>
+                                <div role='tabpanel' class='tab-pane' id='report-bug'>
+                                    <br>
+                                    <p>If you find a bug in CyberChef, please raise an issue in our GitHub repository explaining it in as much detail as possible. Copy and include the following information if relevant.</p>
+                                    <br>
+                                    <pre id='report-bug-info'></pre>
+                                    <br>
+                                    <a class="btn btn-primary" href="https://github.com/gchq/CyberChef/issues/new" role="button">Raise issue on GitHub</a>
+                                </div>
                                 <div role='tabpanel' class='tab-pane' id='stats'>
                                     <br>
                                     <p>If you're a nerd like me, you might find statistics really fun! Here's some about the CyberChef code base:</p>
-                                    <br><pre><%= codebase_stats %></pre>
+                                    <br><pre><%= codebaseStats %></pre>
                                 </div>
                                 <div role='tabpanel' class='tab-pane' id='about' style="padding: 20px;">
                                     <h4>What</h4>

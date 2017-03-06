@@ -23,11 +23,11 @@ OptionsWaiter.prototype.load = function(options) {
         size: "small",
         animate: false,
     });
-    
+
     for (var option in options) {
         this.app.options[option] = options[option];
     }
-    
+
     // Set options to match object
     var cboxes = document.querySelectorAll("#options-body input[type=checkbox]");
     for (var i = 0; i < cboxes.length; i++) {
@@ -39,7 +39,7 @@ OptionsWaiter.prototype.load = function(options) {
         nboxes[i].value = this.app.options[nboxes[i].getAttribute("option")];
         nboxes[i].dispatchEvent(new CustomEvent("change", {bubbles: true}));
     }
-    
+
     var selects = document.querySelectorAll("#options-body select");
     for (i = 0; i < selects.length; i++) {
         selects[i].value = this.app.options[selects[i].getAttribute("option")];
@@ -52,7 +52,7 @@ OptionsWaiter.prototype.load = function(options) {
  * Handler for options click events.
  * Dispays the options pane.
  */
-OptionsWaiter.prototype.options_click = function() {
+OptionsWaiter.prototype.optionsClick = function() {
     $("#options-modal").modal();
 };
 
@@ -61,7 +61,7 @@ OptionsWaiter.prototype.options_click = function() {
  * Handler for reset options click events.
  * Resets options back to their default values.
  */
-OptionsWaiter.prototype.reset_options_click = function() {
+OptionsWaiter.prototype.resetOptionsClick = function() {
     this.load(this.app.doptions);
 };
 
@@ -73,10 +73,10 @@ OptionsWaiter.prototype.reset_options_click = function() {
  * @param {event} e
  * @param {boolean} state
  */
-OptionsWaiter.prototype.switch_change = function(e, state) {
+OptionsWaiter.prototype.switchChange = function(e, state) {
     var el = e.target,
         option = el.getAttribute("option");
-        
+
     this.app.options[option] = state;
     localStorage.setItem("options", JSON.stringify(this.app.options));
 };
@@ -88,10 +88,10 @@ OptionsWaiter.prototype.switch_change = function(e, state) {
  *
  * @param {event} e
  */
-OptionsWaiter.prototype.number_change = function(e) {
+OptionsWaiter.prototype.numberChange = function(e) {
     var el = e.target,
         option = el.getAttribute("option");
-        
+
     this.app.options[option] = parseInt(el.value, 10);
     localStorage.setItem("options", JSON.stringify(this.app.options));
 };
@@ -103,26 +103,26 @@ OptionsWaiter.prototype.number_change = function(e) {
  *
  * @param {event} e
  */
-OptionsWaiter.prototype.select_change = function(e) {
+OptionsWaiter.prototype.selectChange = function(e) {
     var el = e.target,
         option = el.getAttribute("option");
-        
+
     this.app.options[option] = el.value;
     localStorage.setItem("options", JSON.stringify(this.app.options));
 };
 
 
 /**
- * Sets or unsets word wrap on the input and output depending on the word_wrap option value.
+ * Sets or unsets word wrap on the input and output depending on the wordWrap option value.
  */
-OptionsWaiter.prototype.set_word_wrap = function() {
+OptionsWaiter.prototype.setWordWrap = function() {
     document.getElementById("input-text").classList.remove("word-wrap");
     document.getElementById("output-text").classList.remove("word-wrap");
     document.getElementById("output-html").classList.remove("word-wrap");
     document.getElementById("input-highlighter").classList.remove("word-wrap");
     document.getElementById("output-highlighter").classList.remove("word-wrap");
-    
-    if (!this.app.options.word_wrap) {
+
+    if (!this.app.options.wordWrap) {
         document.getElementById("input-text").classList.add("word-wrap");
         document.getElementById("output-text").classList.add("word-wrap");
         document.getElementById("output-html").classList.add("word-wrap");

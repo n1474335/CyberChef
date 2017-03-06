@@ -17,7 +17,7 @@ var URL_ = {
      * @default
      */
     ENCODE_ALL: false,
-    
+
     /**
      * URL Encode operation.
      *
@@ -25,12 +25,12 @@ var URL_ = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_to: function(input, args) {
-        var encode_all = args[0];
-        return encode_all ? URL_._encode_all_chars(input) : encodeURI(input);
+    runTo: function(input, args) {
+        var encodeAll = args[0];
+        return encodeAll ? URL_._encodeAllChars(input) : encodeURI(input);
     },
-    
-    
+
+
     /**
      * URL Decode operation.
      *
@@ -38,16 +38,16 @@ var URL_ = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_from: function(input, args) {
+    runFrom: function(input, args) {
         var data = input.replace(/\+/g, "%20");
         try {
             return decodeURIComponent(data);
-        } catch(err) {
+        } catch (err) {
             return unescape(data);
         }
     },
-    
-    
+
+
     /**
      * Parse URI operation.
      *
@@ -55,13 +55,13 @@ var URL_ = {
      * @param {Object[]} args
      * @returns {string}
      */
-    run_parse: function(input, args) {
+    runParse: function(input, args) {
         var a = document.createElement("a");
-        
+
         // Overwrite base href which will be the current CyberChef URL to reduce confusion.
         a.href = "http://example.com/";
         a.href = input;
-        
+
         if (a.protocol) {
             var output = "";
             if (a.hostname !== window.location.hostname) {
@@ -69,7 +69,7 @@ var URL_ = {
                 if (a.hostname) output += "Hostname:\t" + a.hostname + "\n";
                 if (a.port) output += "Port:\t\t" + a.port + "\n";
             }
-            
+
             if (a.pathname && a.pathname !== window.location.pathname) {
                 var pathname = a.pathname;
                 if (pathname.indexOf(window.location.pathname) === 0)
@@ -77,34 +77,34 @@ var URL_ = {
                 if (pathname)
                     output += "Path name:\t" + pathname + "\n";
             }
-            
+
             if (a.hash && a.hash !== window.location.hash) {
                 output += "Hash:\t\t" + a.hash + "\n";
             }
-            
+
             if (a.search && a.search !== window.location.search) {
                 output += "Arguments:\n";
                 var args_ = (a.search.slice(1, a.search.length)).split("&");
-                var split_args = [], padding = 0;
+                var splitArgs = [], padding = 0;
                 for (var i = 0; i < args_.length; i++) {
-                    split_args.push(args_[i].split("="));
-                    padding = (split_args[i][0].length > padding) ? split_args[i][0].length : padding;
+                    splitArgs.push(args_[i].split("="));
+                    padding = (splitArgs[i][0].length > padding) ? splitArgs[i][0].length : padding;
                 }
-                for (i = 0; i < split_args.length; i++) {
-                    output += "\t" + Utils.pad_right(split_args[i][0], padding);
-                    if (split_args[i].length > 1 && split_args[i][1].length)
-                        output += " = " + split_args[i][1] + "\n";
+                for (i = 0; i < splitArgs.length; i++) {
+                    output += "\t" + Utils.padRight(splitArgs[i][0], padding);
+                    if (splitArgs[i].length > 1 && splitArgs[i][1].length)
+                        output += " = " + splitArgs[i][1] + "\n";
                     else output += "\n";
                 }
             }
-                    
+
             return output;
         }
-        
+
         return "Invalid URI";
     },
-    
-    
+
+
     /**
      * URL encodes additional special characters beyond the standard set.
      *
@@ -112,7 +112,7 @@ var URL_ = {
      * @param {string} str
      * @returns {string}
      */
-    _encode_all_chars: function(str) {
+    _encodeAllChars: function(str) {
         //TODO Do this programatically
         return encodeURIComponent(str)
             .replace(/!/g, "%21")
@@ -126,5 +126,5 @@ var URL_ = {
             .replace(/_/g, "%5F")
             .replace(/~/g, "%7E");
     },
-    
+
 };
